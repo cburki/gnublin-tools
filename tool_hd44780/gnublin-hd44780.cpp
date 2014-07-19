@@ -6,9 +6,9 @@
 // Maintainer   : Christophe Burki
 // Created      : Thu Jul 17 16:35:30 2014
 // Version      : 1.0.0
-// Last-Updated : Sat Jul 19 15:26:07 2014 (7200 CEST)
+// Last-Updated : Sat Jul 19 16:29:10 2014 (7200 CEST)
 //           By : Christophe Burki
-//     Update # : 57
+//     Update # : 58
 // URL          : 
 // Keywords     : 
 // Compatibility: 
@@ -244,7 +244,6 @@ int main (int argc, char **argv) {
         exit(1);
     }
 
-    printf("buffer=%s\n", buffer);
     hd44780 = new gnublin_module_hd44780(hd44780Driver);
     hd44780->init();
     hd44780->clear();
