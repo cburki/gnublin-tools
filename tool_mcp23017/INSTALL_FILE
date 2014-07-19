@@ -1,0 +1,3 @@
+# local_path                    target_path                                                     owner           mode
+
+gnublin-mcp23017                /usr/local/bin/gnublin-mcp23017                                 root:staff      4755
