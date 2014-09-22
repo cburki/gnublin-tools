@@ -1,6 +1,7 @@
 tool_mcp23017/gnublin-mcp23017
 tool_sc16is750/gnublin-sc16is750
 tool_hd44780/gnublin-hd44780
+tool_sht2x/gnublin-sht2x
 
 *~
 *.o
