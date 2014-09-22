@@ -6,9 +6,9 @@
 ## Maintainer   : Christophe Burki
 ## Created      : Thu Jul 17 17:09:25 2014
 ## Version      : 1.0.0
-## Last-Updated : Fri Jul 18 13:03:38 2014 (7200 CEST)
+## Last-Updated : Mon Sep 22 11:11:48 2014 (7200 CEST)
 ##           By : Christophe Burki
-##     Update # : 4
+##     Update # : 5
 ## URL          : 
 ## Keywords     : 
 ## Compatibility: 
@@ -51,8 +51,8 @@ SOURCES := gnublin-sc16is750.cpp
 include ../Config.mk
 include $(GNUBLINMKDIR)/gnublin.mk
 
-CPPFLAGS += -I../../gnublin-modules/module_sc16is750
-OBJECTS += ../../gnublin-modules/module_sc16is750/module_sc16is750.o
+CPPFLAGS += -I../../gnublin-modules/module_sc16is7x0
+OBJECTS += ../../gnublin-modules/module_sc16is7x0/module_sc16is7x0.o ../../gnublin-modules/module_sc16is7x0/module_sc16is750.o
 
 ######################################################################
 ### Makefile ends here
