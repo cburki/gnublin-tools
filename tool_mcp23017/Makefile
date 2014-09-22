@@ -6,9 +6,9 @@
 ## Maintainer   : Christophe Burki
 ## Created      : Thu Jul 17 17:08:42 2014
 ## Version      : 1.0.0
-## Last-Updated : Fri Jul 18 13:02:29 2014 (7200 CEST)
+## Last-Updated : Mon Sep 22 11:11:10 2014 (7200 CEST)
 ##           By : Christophe Burki
-##     Update # : 3
+##     Update # : 4
 ## URL          : 
 ## Keywords     : 
 ## Compatibility: 
@@ -51,8 +51,8 @@ SOURCES := gnublin-mcp23017.cpp
 include ../Config.mk
 include $(GNUBLINMKDIR)/gnublin.mk
 
-CPPFLAGS += -I../../gnublin-modules/module_mcp23017
-OBJECTS += ../../gnublin-modules/module_mcp23017/module_mcp23017.o
+CPPFLAGS += -I../../gnublin-modules/module_mcp230xx
+OBJECTS += ../../gnublin-modules/module_mcp230xx/module_mcp230xx.o ../../gnublin-modules/module_mcp230xx/module_mcp23017.o
 
 ######################################################################
 ### Makefile ends here
