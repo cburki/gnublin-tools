@@ -6,9 +6,9 @@
 ## Maintainer   : Christophe Burki
 ## Created      : Thu Jul 17 17:07:30 2014
 ## Version      : 1.0.0
-## Last-Updated : Fri Jul 18 13:03:54 2014 (7200 CEST)
+## Last-Updated : Thu Sep 18 14:05:49 2014 (7200 CEST)
 ##           By : Christophe Burki
-##     Update # : 6
+##     Update # : 9
 ## URL          : 
 ## Keywords     : 
 ## Compatibility: 
@@ -51,8 +51,8 @@ SOURCES := gnublin-hd44780.cpp
 include ../Config.mk
 include $(GNUBLINMKDIR)/gnublin.mk
 
-CPPFLAGS += -I../../gnublin-modules/module_hd44780 -I../../gnublin-modules/module_mcp23017  -I../../gnublin-modules/module_sc16is750
-OBJECTS += ../../gnublin-modules/module_hd44780/module_hd44780.o ../../gnublin-modules/module_mcp23017/module_mcp23017.o ../../gnublin-modules/module_sc16is750/module_sc16is750.o
+CPPFLAGS += -I../../gnublin-modules/module_hd44780 -I../../gnublin-modules/module_mcp230xx  -I../../gnublin-modules/module_sc16is7x0
+OBJECTS += ../../gnublin-modules/module_hd44780/module_hd44780.o ../../gnublin-modules/module_mcp230xx/module_mcp230xx.o ../../gnublin-modules/module_mcp230xx/module_mcp23017.o ../../gnublin-modules/module_sc16is7x0/module_sc16is7x0.o ../../gnublin-modules/module_sc16is7x0/module_sc16is750.o
 
 ######################################################################
 ### Makefile ends here
