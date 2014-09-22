@@ -6,9 +6,9 @@
 ## Maintainer   : Christophe Burki 
 ## Created      : Fri Jul 18 12:52:42 2014
 ## Version      : 1.0.0
-## Last-Updated : Fri Jul 18 13:01:40 2014 (7200 CEST)
+## Last-Updated : Mon Sep 22 11:12:56 2014 (7200 CEST)
 ##           By : Christophe Burki
-##     Update # : 5
+##     Update # : 7
 ## URL          : 
 ## Keywords     : 
 ## Compatibility: 
@@ -46,7 +46,7 @@
 
 include Config.mk
 
-TOOLS := mcp23017 sc16is750 hd44780
+TOOLS := mcp23017 sc16is750 hd44780 sht2x
 
 all: ; $(foreach tool,$(TOOLS),(cd tool_$(tool); make) &&):
 
