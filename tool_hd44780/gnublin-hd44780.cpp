@@ -1,14 +1,14 @@
 // gnublin-hd44780.cpp --- 
 // 
 // Filename     : gnublin-hd44780.cpp
-// Description  : HD44780 tools for easly interacting with theh HD44680 LCD.
+// Description  : HD44780 tools for easly interacting with the HD44680 LCD.
 // Author       : Christophe Burki
 // Maintainer   : Christophe Burki
 // Created      : Thu Jul 17 16:35:30 2014
 // Version      : 1.0.0
-// Last-Updated : Sat Jul 19 16:29:10 2014 (7200 CEST)
+// Last-Updated : Sat Sep 20 17:47:58 2014 (7200 CEST)
 //           By : Christophe Burki
-//     Update # : 58
+//     Update # : 90
 // URL          : 
 // Keywords     : 
 // Compatibility: 
@@ -66,6 +66,9 @@ int d4Pin = -1;
 int d5Pin = -1;
 int d6Pin = -1;
 int d7Pin = -1;
+int dsPin = -1;
+int shcpPin = -1;
+int stcpPin = -1;
 int row = 1;
 int col = 1;
 int i2cAddress = 0x20;
@@ -82,17 +85,20 @@ void help(void) {
 
     string helpString="This program was designed to easily interact with the SC16IS750 single UART.\n\n"
         "--help, -? Show this help\n"
-        "--rs <pin> Specify the RS pin (required)\n"
-        "--en <pin> Specify the RS pin (required)\n"
-        "--d4 <pin> Specify the RS pin (required)\n"
-        "--d5 <pin> Specify the RS pin (required)\n"
-        "--d6 <pin> Specify the RS pin (required)\n"
-        "--d7 <pin> Specify the RS pin (required)\n"
-        "--text <text>, -t <text> Specify the text to display\n"
-        "--row <row>, -r <row> Specify on which row to display the text\n"
-        "--col <col>, -c <col> Specify on which column to display the text\n"
-        "--driver <driver>, -d <driver> Specify the driver to access the LCD (gpio, mcp23017, sc16is750). Default to gpio.\n"
-        "--address <address>, -a <address> Specify the i2c address for the driver components (default is 0x20)\n"
+        "--rs=<pin> Specify the RS pin, specify the 74HC595 output when driver is 74hc595 (required)\n"
+        "--en=<pin> Specify the EN pin, specify the 74HC595 output when driver is 74hc595 (required)\n"
+        "--d4=<pin> Specify the D4 pin, specify the 74HC595 output when driver is 74hc595 (required)\n"
+        "--d5=<pin> Specify the D5 pin, specify the 74HC595 output when driver is 74hc595 (required)\n"
+        "--d6=<pin> Specify the D6 pin, specify the 74HC595 output when driver is 74hc595 (required)\n"
+        "--d7=<pin> Specify the D7 pin, specify the 74HC595 output when driver is 74hc595 (required)\n"
+        "--ds=<pin> Specify the 74HC595 serial data (DS) pin (required for driver 74hc595)\n"
+        "--shcp=<pin> Specify the 74HC595 shift clock (SHCP) pin (required for driver 74hc595)\n"
+        "--stcp=<pin> Specify the 74HC595 storage clock (STCP) pin (required for driver 74hc595)\n"
+        "--text=<text>, -t <text> Specify the text to display\n"
+        "--row=<row>, -r <row> Specify on which row to display the text\n"
+        "--col=<col>, -c <col> Specify on which column to display the text\n"
+        "--driver=<driver>, -d <driver> Specify the driver to access the LCD (gpio, 74hc595, mcp23017, sc16is750). Default to gpio.\n"
+        "--address=<address>, -a <address> Specify the i2c address for the driver components (default is 0x20)\n"
         "--json Convert output to json format\n"
         "--raw Show output in raw format\n"
         "Examples:\n\n"
@@ -138,6 +144,8 @@ void printOutput(void) {
     
 	/* Nothing to output. */
 }
+
+
 /**
  * @~english
  * @brief Main program.
@@ -152,6 +160,9 @@ int main (int argc, char **argv) {
         {"d5", required_argument, NULL, 'w'},
         {"d6", required_argument, NULL, 'v'},
         {"d7", required_argument, NULL, 'u'},
+        {"ds", optional_argument, NULL, 'q'},
+        {"shcp", optional_argument, NULL, 'p'},
+        {"stcp", optional_argument, NULL, 'o'},
         {"text", required_argument, NULL, 't'},
         {"row", required_argument, NULL, 'r'},
         {"col", required_argument, NULL, 'c'},
@@ -166,7 +177,7 @@ int main (int argc, char **argv) {
     int optionIndex = 0;
     int c = 0;
     while (1) {
-		c = getopt_long(argc, argv, "?z:y:x:w:v:u:t:r:c:d:a:", longOptions, &optionIndex);
+		c = getopt_long(argc, argv, "?z:y:x:w:v:u:q:p:o:t:r:c:d:a:", longOptions, &optionIndex);
 
         if (c == -1) {
             break;
@@ -200,7 +211,17 @@ int main (int argc, char **argv) {
         case 'u' :
             d7Pin = atoi(optarg);
             break;
+        case 'q' :
+            dsPin = atoi(optarg);
+            break;
+        case 'p' :
+            shcpPin = atoi(optarg);
+            break;
+        case 'o' :
+            stcpPin = atoi(optarg);
+            break;
         case 't' :
+            printf("length optarg=%d\n", strlen(optarg));
             strcpy(buffer, optarg);
             break;
         case 'r' :
@@ -225,10 +246,19 @@ int main (int argc, char **argv) {
     if ((rsPin == -1) || (enPin == -1) || (d4Pin == -1) || (d5Pin == -1) || (d6Pin == -1) || (d7Pin == -1)) {
         rawFlag = 1;
         printError("NOK", "All the pins must be specified !");
+        exit(1);
     }
 
     if (strcmp(driver, "gpio") == 0) {
         hd44780Driver = new gnublin_hd44780_driver_gpio(rsPin, enPin, d4Pin, d5Pin, d6Pin, d7Pin);
+    }
+    else if (strcmp(driver, "74hc595") == 0) {
+        if ((dsPin == -1) || (shcpPin == -1) || (stcpPin == -1)) {
+            rawFlag = 1;
+            printError("NOK", "The DS, SHCP and STCP pins must be specified when using drive 74hc595 !");
+            exit(1);
+        }
+        hd44780Driver = new gnublin_hd44780_driver_74hc595(rsPin, enPin, d4Pin, d5Pin, d6Pin, d7Pin, dsPin, shcpPin, stcpPin);
     }
     else if (strcmp(driver, "mcp23017") == 0) {
         hd44780Driver = new gnublin_hd44780_driver_mcp23017(rsPin, enPin, d4Pin, d5Pin, d6Pin, d7Pin);
