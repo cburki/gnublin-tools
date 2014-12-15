@@ -6,9 +6,9 @@
 // Maintainer   : Christophe Burki
 // Created      : Sat Sep 20 17:27:42 2014
 // Version      : 1.0.0
-// Last-Updated : Sun Sep 21 17:26:21 2014 (7200 CEST)
+// Last-Updated : Mon Oct 20 20:48:19 2014 (7200 CEST)
 //           By : Christophe Burki
-//     Update # : 59
+//     Update # : 60
 // URL          : 
 // Keywords     : 
 // Compatibility: 
@@ -165,7 +165,7 @@ int main (int argc, char **argv) {
             if (longOptions[optionIndex].flag != 0) {
         		break;
             }
-        case('?') :
+        case '?' :
             help();
             return 0;
             break;
